@@ -1,65 +1,67 @@
-import Image from "next/image";
+import Link from 'next/link';
 
-export default function Home() {
+export default function Accueil() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main>
+
+      {/* HERO */}
+      <section className="flex items-center justify-between px-16 pt-40 pb-24 bg-white">
+        <div className="max-w-lg">
+          <h2 className="text-5xl text-pink-600 mb-6 leading-tight">
+            Votre beauté,<br />notre priorité
+          </h2>
+          <p className="text-gray-500 text-lg mb-8 leading-relaxed">
+            Découvrez nos laits de corps, savons et senteurs,
+            et profitez de soins professionnels dans notre institut.
           </p>
+          <div className="flex gap-4 flex-wrap">
+            <Link href="/boutique" className="btn-rose">Découvrir la boutique</Link>
+            <Link href="/rendezvous" className="btn-blanc">Prendre rendez-vous</Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className="w-80 h-80 bg-pink-100 rounded-3xl flex items-center justify-center text-6xl shadow-lg">
+          🌸
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* NOUVEAUTÉS */}
+      <section className="bg-pink-50 px-16 py-16">
+        <h2 className="text-3xl text-pink-600 text-center mb-10">✨ Nouveautés</h2>
+        <div className="flex justify-center gap-8 flex-wrap">
+          {[
+            { nom: "Lait de corps Rose", prix: "12€", emoji: "🌹" },
+            { nom: "Gamme Testeur Collagène", prix: "15 000 FCFA", emoji: "💎" },
+            { nom: "Parfum Vanille", prix: "18€", emoji: "🌿" },
+          ].map((p) => (
+            <div key={p.nom} className="bg-white rounded-2xl p-6 w-56 text-center shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+              <div className="text-5xl mb-4">{p.emoji}</div>
+              <h3 className="text-pink-600 font-semibold mb-2">{p.nom}</h3>
+              <p className="text-gray-500 mb-4">{p.prix}</p>
+              <Link href="/boutique" className="btn-rose text-sm px-4 py-2">Voir</Link>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* SERVICES */}
+      <section className="px-16 py-16 text-center">
+        <h2 className="text-3xl text-pink-600 mb-10">Nos services</h2>
+        <div className="flex justify-center gap-10 flex-wrap">
+          {[
+            { emoji: "💆", label: "Soin du visage" },
+            { emoji: "🤲", label: "Massage relaxant" },
+            { emoji: "💅", label: "Beauté des mains" },
+          ].map((s) => (
+            <div key={s.label} className="flex flex-col items-center gap-3">
+              <div className="w-32 h-32 bg-pink-50 rounded-2xl flex items-center justify-center text-5xl">
+                {s.emoji}
+              </div>
+              <p className="font-medium text-gray-600">{s.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+    </main>
   );
 }
