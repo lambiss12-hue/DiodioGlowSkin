@@ -57,20 +57,30 @@ export default function SuggestionsSection({ produit }) {
               e.currentTarget.style.transform = 'translateY(-8px)';
               e.currentTarget.style.boxShadow = '0 24px 48px rgba(0,0,0,0.10)';
               e.currentTarget.querySelector('.sugg-overlay').style.opacity = '1';
-              e.currentTarget.querySelector('.sugg-letter').style.opacity = '0.5';
+              const lettre = e.currentTarget.querySelector('.sugg-letter');
+              if (lettre) lettre.style.opacity = '0.5';
+              const photo = e.currentTarget.querySelector('.sugg-photo');
+              if (photo) photo.style.transform = 'scale(1.08)';
             }}
             onMouseLeave={e => {
               e.currentTarget.style.transform = 'translateY(0)';
               e.currentTarget.style.boxShadow = 'none';
               e.currentTarget.querySelector('.sugg-overlay').style.opacity = '0';
-              e.currentTarget.querySelector('.sugg-letter').style.opacity = '0.2';
+              const lettre = e.currentTarget.querySelector('.sugg-letter');
+              if (lettre) lettre.style.opacity = '0.2';
+              const photo = e.currentTarget.querySelector('.sugg-photo');
+              if (photo) photo.style.transform = 'scale(1)';
             }}
           >
             {/* IMAGE */}
             <div style={{height:'240px', background:'linear-gradient(135deg, #FDF4F6 0%, #F0D6DC 100%)', display:'flex', alignItems:'center', justifyContent:'center', position:'relative', overflow:'hidden'}}>
-              <span className="sugg-letter" style={{fontFamily:'Cormorant Garamond, serif', fontSize:'80px', fontWeight:300, color:'var(--rose)', opacity:0.2, transition:'opacity 0.4s ease'}}>
-                {p.nom.charAt(0)}
-              </span>
+              {p.image_url ? (
+                <img src={p.image_url} alt={p.nom} className="sugg-photo" style={{position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', transition:'transform 0.5s ease'}} />
+              ) : (
+                <span className="sugg-letter" style={{fontFamily:'Cormorant Garamond, serif', fontSize:'80px', fontWeight:300, color:'var(--rose)', opacity:0.2, transition:'opacity 0.4s ease'}}>
+                  {p.nom.charAt(0)}
+                </span>
+              )}
               <div className="sugg-overlay" style={{position:'absolute', inset:0, background:'rgba(28,28,30,0.55)', display:'flex', alignItems:'center', justifyContent:'center', opacity:0, transition:'opacity 0.4s ease'}}>
                 <span style={{color:'white', fontSize:'11px', letterSpacing:'3px', textTransform:'uppercase', fontWeight:500, borderBottom:'1px solid rgba(255,255,255,0.4)', paddingBottom:'4px'}}>
                   Voir le produit →

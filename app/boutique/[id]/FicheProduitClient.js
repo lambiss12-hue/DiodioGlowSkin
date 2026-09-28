@@ -56,13 +56,17 @@ export default function FicheProduitClient({ produit }) {
           display:'flex', alignItems:'center', justifyContent:'center',
           position:'relative', minHeight:'600px'
         }}>
-          <span className="fiche-letter" style={{
-            fontFamily:'Cormorant Garamond, serif', fontSize:'180px',
-            fontWeight:300, color:'var(--rose)', opacity:0.2, letterSpacing:'-4px',
-            userSelect:'none'
-          }}>
-            {produit.nom.charAt(0)}
-          </span>
+          {produit.image_url ? (
+            <img src={produit.image_url} alt={produit.nom} style={{position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover'}} />
+          ) : (
+            <span className="fiche-letter" style={{
+              fontFamily:'Cormorant Garamond, serif', fontSize:'180px',
+              fontWeight:300, color:'var(--rose)', opacity:0.2, letterSpacing:'-4px',
+              userSelect:'none'
+            }}>
+              {produit.nom.charAt(0)}
+            </span>
+          )}
 
           {produit.en_promotion && (
             <div style={{

@@ -70,11 +70,16 @@ export default function Panier() {
               <div style={{
                 width:'80px', height:'80px',
                 background:'linear-gradient(135deg, #FDF4F6, #F0D6DC)',
-                display:'flex', alignItems:'center', justifyContent:'center'
+                display:'flex', alignItems:'center', justifyContent:'center',
+                overflow:'hidden'
               }}>
-                <span style={{fontFamily:'Cormorant Garamond, serif', fontSize:'36px', fontWeight:300, color:'var(--rose)', opacity:0.4}}>
-                  {item.nom.charAt(0)}
-                </span>
+                {item.image_url ? (
+                  <img src={item.image_url} alt={item.nom} style={{width:'100%', height:'100%', objectFit:'cover'}} />
+                ) : (
+                  <span style={{fontFamily:'Cormorant Garamond, serif', fontSize:'36px', fontWeight:300, color:'var(--rose)', opacity:0.4}}>
+                    {item.nom.charAt(0)}
+                  </span>
+                )}
               </div>
 
               {/* INFOS */}

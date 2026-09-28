@@ -699,8 +699,12 @@ export default function Commande() {
                 {panier.map(item => (
                   <div key={item.id} style={{display:'flex', justifyContent:'space-between', alignItems:'center', padding:'16px 0', borderBottom:'1px solid var(--gray-light)'}}>
                     <div style={{display:'flex', alignItems:'center', gap:'16px'}}>
-                      <div style={{width:'48px', height:'48px', background:'linear-gradient(135deg,#FDF4F6,#F0D6DC)', display:'flex', alignItems:'center', justifyContent:'center'}}>
-                        <span style={{fontFamily:'Cormorant Garamond, serif', fontSize:'21px', color:'var(--rose)', opacity:0.4}}>{item.nom.charAt(0)}</span>
+                      <div style={{width:'48px', height:'48px', background:'linear-gradient(135deg,#FDF4F6,#F0D6DC)', display:'flex', alignItems:'center', justifyContent:'center', overflow:'hidden'}}>
+                        {item.image_url ? (
+                          <img src={item.image_url} alt={item.nom} style={{width:'100%', height:'100%', objectFit:'cover'}} />
+                        ) : (
+                          <span style={{fontFamily:'Cormorant Garamond, serif', fontSize:'21px', color:'var(--rose)', opacity:0.4}}>{item.nom.charAt(0)}</span>
+                        )}
                       </div>
                       <div>
                         <div style={{fontSize:'15px', color:'var(--dark)', fontWeight:500}}>{item.nom}</div>
@@ -784,8 +788,12 @@ export default function Commande() {
             </p>
             {panier.map(item => (
               <div key={item.id} style={{display:'flex', gap:'12px', alignItems:'center', marginBottom:'16px'}}>
-                <div style={{width:'44px', height:'44px', background:'linear-gradient(135deg,#FDF4F6,#F0D6DC)', flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center'}}>
-                  <span style={{fontFamily:'Cormorant Garamond, serif', fontSize:'19px', color:'var(--rose)', opacity:0.4}}>{item.nom.charAt(0)}</span>
+                <div style={{width:'44px', height:'44px', background:'linear-gradient(135deg,#FDF4F6,#F0D6DC)', flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center', overflow:'hidden'}}>
+                  {item.image_url ? (
+                    <img src={item.image_url} alt={item.nom} style={{width:'100%', height:'100%', objectFit:'cover'}} />
+                  ) : (
+                    <span style={{fontFamily:'Cormorant Garamond, serif', fontSize:'19px', color:'var(--rose)', opacity:0.4}}>{item.nom.charAt(0)}</span>
+                  )}
                 </div>
                 <div style={{flex:1}}>
                   <div style={{fontSize:'14px', color:'var(--dark)', fontWeight:500}}>{item.nom}</div>

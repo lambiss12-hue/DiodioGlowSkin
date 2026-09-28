@@ -83,9 +83,13 @@ export default async function Accueil() {
           ) : produitsPhares.map((p) => (
             <Link key={p.id} href={`/boutique/${p.id}`} className="pf-card" style={{background:'white', position:'relative', overflow:'hidden', textDecoration:'none', display:'block'}}>
               <div className="pf-image" style={{height:'320px', background:'linear-gradient(135deg, #FDF4F6 0%, #F0D6DC 100%)', display:'flex', alignItems:'center', justifyContent:'center', position:'relative', overflow:'hidden'}}>
-                <span className="pf-letter" style={{fontFamily:'Cormorant Garamond, serif', fontSize:'80px', fontWeight:300, color:'var(--rose)', opacity:0.3, letterSpacing:'-2px'}}>
-                  {p.nom.charAt(0)}
-                </span>
+                {p.image_url ? (
+                  <img src={p.image_url} alt={p.nom} className="pf-photo" style={{position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover'}} />
+                ) : (
+                  <span className="pf-letter" style={{fontFamily:'Cormorant Garamond, serif', fontSize:'80px', fontWeight:300, color:'var(--rose)', opacity:0.3, letterSpacing:'-2px'}}>
+                    {p.nom.charAt(0)}
+                  </span>
+                )}
                 <div className="pf-overlay" style={{position:'absolute', inset:0, background:'rgba(28,28,30,0.55)', display:'flex', alignItems:'center', justifyContent:'center', opacity:0}}>
                   <span style={{color:'white', fontSize:'11px', letterSpacing:'3px', textTransform:'uppercase', fontWeight:500, borderBottom:'1px solid rgba(255,255,255,0.4)', paddingBottom:'4px'}}>
                     Voir le produit →
@@ -195,6 +199,8 @@ export default async function Accueil() {
         .pf-card:hover { transform: translateY(-8px); box-shadow: 0 24px 48px rgba(0,0,0,0.10); }
         .pf-letter { transition: transform 0.45s ease, opacity 0.45s ease; }
         .pf-card:hover .pf-letter { transform: scale(1.1); opacity: 0.5; }
+        .pf-photo { transition: transform 0.6s ease; }
+        .pf-card:hover .pf-photo { transform: scale(1.08); }
         .pf-overlay { transition: opacity 0.4s ease; }
         .pf-card:hover .pf-overlay { opacity: 1; }
 

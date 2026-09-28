@@ -38,15 +38,19 @@ export default function PromotionsClient({ produits }) {
               e.currentTarget.style.transform = 'translateY(-8px)';
               e.currentTarget.style.boxShadow = '0 24px 48px rgba(0,0,0,0.10)';
               e.currentTarget.querySelector('.promo-img-overlay').style.opacity = '1';
-              e.currentTarget.querySelector('.promo-img-letter').style.transform = 'scale(1.1)';
-              e.currentTarget.querySelector('.promo-img-letter').style.opacity = '0.5';
+              const lettre = e.currentTarget.querySelector('.promo-img-letter');
+              if (lettre) { lettre.style.transform = 'scale(1.1)'; lettre.style.opacity = '0.5'; }
+              const photo = e.currentTarget.querySelector('.promo-img-photo');
+              if (photo) photo.style.transform = 'scale(1.08)';
             }}
             onMouseLeave={e => {
               e.currentTarget.style.transform = 'translateY(0)';
               e.currentTarget.style.boxShadow = 'none';
               e.currentTarget.querySelector('.promo-img-overlay').style.opacity = '0';
-              e.currentTarget.querySelector('.promo-img-letter').style.transform = 'scale(1)';
-              e.currentTarget.querySelector('.promo-img-letter').style.opacity = '0.3';
+              const lettre = e.currentTarget.querySelector('.promo-img-letter');
+              if (lettre) { lettre.style.transform = 'scale(1)'; lettre.style.opacity = '0.3'; }
+              const photo = e.currentTarget.querySelector('.promo-img-photo');
+              if (photo) photo.style.transform = 'scale(1)';
             }}
           >
             <Link
@@ -54,9 +58,13 @@ export default function PromotionsClient({ produits }) {
               onClick={e => { if (!p.en_stock) e.preventDefault(); }}
               style={{height:'300px', background:'linear-gradient(135deg, #FDF4F6 0%, #F0D6DC 100%)', display:'flex', alignItems:'center', justifyContent:'center', position:'relative', overflow:'hidden', cursor: p.en_stock ? 'pointer' : 'default'}}>
 
-              <span className="promo-img-letter" style={{fontFamily:'Cormorant Garamond, serif', fontSize:'80px', fontWeight:300, color:'var(--rose)', opacity:0.3, letterSpacing:'-2px', transition:'all 0.4s ease'}}>
-                {p.nom.charAt(0)}
-              </span>
+              {p.image_url ? (
+                <img src={p.image_url} alt={p.nom} className="promo-img-photo" style={{position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', transition:'transform 0.5s ease'}} />
+              ) : (
+                <span className="promo-img-letter" style={{fontFamily:'Cormorant Garamond, serif', fontSize:'80px', fontWeight:300, color:'var(--rose)', opacity:0.3, letterSpacing:'-2px', transition:'all 0.4s ease'}}>
+                  {p.nom.charAt(0)}
+                </span>
+              )}
 
               <div className="promo-img-overlay" style={{position:'absolute', inset:0, background:'rgba(28,28,30,0.55)', display:'flex', alignItems:'center', justifyContent:'center', opacity:0, transition:'opacity 0.4s ease'}}>
                 <span style={{color:'white', fontSize:'11px', letterSpacing:'3px', textTransform:'uppercase', fontWeight:500, borderBottom:'1px solid rgba(255,255,255,0.4)', paddingBottom:'4px'}}>

@@ -62,15 +62,19 @@ export default function BoutiqueClient({ produits }) {
                 e.currentTarget.style.transform = 'translateY(-8px)';
                 e.currentTarget.style.boxShadow = '0 24px 48px rgba(0,0,0,0.10)';
                 e.currentTarget.querySelector('.prod-img-overlay').style.opacity = '1';
-                e.currentTarget.querySelector('.prod-img-letter').style.transform = 'scale(1.1)';
-                e.currentTarget.querySelector('.prod-img-letter').style.opacity = '0.5';
+                const lettre = e.currentTarget.querySelector('.prod-img-letter');
+                if (lettre) { lettre.style.transform = 'scale(1.1)'; lettre.style.opacity = '0.5'; }
+                const photo = e.currentTarget.querySelector('.prod-img-photo');
+                if (photo) photo.style.transform = 'scale(1.08)';
             }}
             onMouseLeave={e => {
                 e.currentTarget.style.transform = 'translateY(0)';
                 e.currentTarget.style.boxShadow = 'none';
                 e.currentTarget.querySelector('.prod-img-overlay').style.opacity = '0';
-                e.currentTarget.querySelector('.prod-img-letter').style.transform = 'scale(1)';
-                e.currentTarget.querySelector('.prod-img-letter').style.opacity = '0.3';
+                const lettre = e.currentTarget.querySelector('.prod-img-letter');
+                if (lettre) { lettre.style.transform = 'scale(1)'; lettre.style.opacity = '0.3'; }
+                const photo = e.currentTarget.querySelector('.prod-img-photo');
+                if (photo) photo.style.transform = 'scale(1)';
             }}
             >
             <Link
@@ -78,10 +82,14 @@ export default function BoutiqueClient({ produits }) {
               onClick={e => { if (!p.en_stock) e.preventDefault(); }}
               style={{height:'300px', background:'linear-gradient(135deg, #FDF4F6 0%, #F0D6DC 100%)', display:'flex', alignItems:'center', justifyContent:'center', position:'relative', overflow:'hidden', cursor: p.en_stock ? 'pointer' : 'default'}}>
 
-                {/* LETTRE */}
-                <span className="prod-img-letter" style={{fontFamily:'Cormorant Garamond, serif', fontSize:'80px', fontWeight:300, color:'var(--rose)', opacity:0.3, letterSpacing:'-2px', transition:'all 0.4s ease'}}>
-                {p.nom.charAt(0)}
-                </span>
+                {/* PHOTO OU LETTRE */}
+                {p.image_url ? (
+                  <img src={p.image_url} alt={p.nom} className="prod-img-photo" style={{position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', transition:'transform 0.5s ease'}} />
+                ) : (
+                  <span className="prod-img-letter" style={{fontFamily:'Cormorant Garamond, serif', fontSize:'80px', fontWeight:300, color:'var(--rose)', opacity:0.3, letterSpacing:'-2px', transition:'all 0.4s ease'}}>
+                  {p.nom.charAt(0)}
+                  </span>
+                )}
 
                 {/* OVERLAY AU HOVER */}
                 <div className="prod-img-overlay" style={{position:'absolute', inset:0, background:'rgba(28,28,30,0.55)', display:'flex', alignItems:'center', justifyContent:'center', opacity:0, transition:'opacity 0.4s ease'}}>
