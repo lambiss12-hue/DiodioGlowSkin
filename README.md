@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Diodio Glow Skin
 
-## Getting Started
+Site vitrine, boutique en ligne et prise de rendez-vous pour l'institut de beauté **Diodio Glow Skin** (Dakar).
 
-First, run the development server:
+Construit avec [Next.js](https://nextjs.org) (App Router, Turbopack, React Compiler) et [Supabase](https://supabase.com) (base de données Postgres + authentification).
+
+## Fonctionnalités
+
+- **Boutique** : catalogue de produits par catégorie, fiche produit, suggestions de produits similaires, gestion du stock (`en_stock`) et des promotions (`en_promotion` / `prix_promo`).
+- **Panier & commande** : panier persistant côté client, tunnel de commande en plusieurs étapes (livraison, paiement, récapitulatif), détection automatique de la zone de livraison.
+- **Rendez-vous** : sélection de soins (avec prix, durée, bienfaits, contre-indications), choix d'une date/créneau, confirmation.
+- **Promotions** : page dédiée aux produits en promotion, mise en avant sur l'accueil et dans le carrousel.
+- **Compte client** : connexion/inscription, menu déroulant depuis la navbar (infos, historique commandes/rendez-vous), sans page dédiée.
+- **Page "Mon parcours"** : présentation de la fondatrice.
+- **Panneau d'administration** (`/admin`, accès restreint) : gestion des produits, soins, commandes et rendez-vous.
+
+## Stack technique
+
+- Next.js 16 (App Router, Turbopack, Server Components)
+- React 19 + React Compiler
+- Supabase (`@supabase/supabase-js`, `@supabase/ssr`)
+- Tailwind CSS 4 (styles utilitaires globaux ; la majorité de l'UI est en styles inline avec des tokens CSS définis dans `app/globals.css`)
+
+## Démarrage
 
 ```bash
+npm install
+cp .env.example .env.local   # renseigner les clés Supabase
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Le site est alors accessible sur [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Variables d'environnement
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Voir `.env.example`. Les deux variables (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`) se trouvent dans le dashboard Supabase sous *Project Settings → API*.
 
-## Learn More
+## Base de données (Supabase)
 
-To learn more about Next.js, take a look at the following resources:
+Tables principales utilisées par l'application :
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Table | Description |
+|---|---|
+| `produits` | Catalogue boutique (`nom`, `prix`, `poids`, `categorie`, `description`, `ingredients`, `application`, `conseils`, `image_url`, `est_nouveaute`, `en_stock`, `en_promotion`, `prix_promo`) |
+| `soins` | Soins proposés au rendez-vous (`nom`, `duree`, `prix`, `description`, `bienfaits`, `contre_indications`, `emoji` — clé d'icône, voir `app/components/IconesSoins.js`, `actif`) |
+| `commandes` | Commandes passées depuis le tunnel de commande |
+| `rendezvous` | Rendez-vous pris depuis `/rendezvous` |
+| `admins` | Emails autorisés à accéder à `/admin`. RLS activée : chaque utilisateur connecté ne peut lire que sa propre ligne (`auth.email() = email`) |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Toutes les tables sont interrogées côté client avec la clé anonyme (`NEXT_PUBLIC_SUPABASE_ANON_KEY`) : pensez à activer Row Level Security et des policies adaptées sur toute nouvelle table.
 
-## Deploy on Vercel
+### Devenir administrateur
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Il n'existe pas d'interface pour se déclarer admin (sécurité). Ajoutez votre email dans la table `admins` directement depuis le SQL Editor de Supabase :
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```sql
+insert into admins (email) values ('votre-email@exemple.com');
+```
+
+## Structure du projet
+
+```
+app/
+  admin/          Panneau d'administration
+  auth/           Connexion / inscription
+  boutique/       Catalogue + fiche produit
+  commande/       Tunnel de commande
+  components/     Composants partagés (navbar, icônes, carrousel...)
+  contact/        Page contact
+  context/        Contexte panier (React Context)
+  lib/            Clients Supabase (browser + serveur)
+  mon-parcours/   Page fondatrice
+  panier/         Panier
+  promotions/     Produits en promotion
+  rendezvous/     Prise de rendez-vous
+  globals.css     Tokens de design + classes utilitaires responsives
+  layout.js       Layout racine (navbar, footer)
+```
+
+## Git & branches
+
+- `main` : branche stable, déployée.
+- `dev` : branche de travail pour les changements en cours ; on merge vers `main` une fois une fonctionnalité stabilisée et vérifiée.
+- Pour un changement expérimental ou risqué, créer une branche dédiée à partir de `dev`.
+
+Chaque changement doit donner lieu à un commit avec un message descriptif.
+
+## Scripts
+
+```bash
+npm run dev     # serveur de dev (Turbopack)
+npm run build   # build de production
+npm run start   # démarre le build de production
+npm run lint    # ESLint
+```
