@@ -1,69 +1,41 @@
-import Link from 'next/link';
 import { supabase } from '../lib/supabase';
-
-const categories = [
-  { id: "tous", label: "Tous" },
-  { id: "laits", label: "Laits de corps" },
-  { id: "savons", label: "Savons" },
-  { id: "parfums", label: "Parfums" },
-  { id: "gammes", label: "Gammes" },
-];
+import BoutiqueClient from './BoutiqueClient';
 
 export default async function Boutique() {
   const { data: produits, error } = await supabase
     .from('produits')
     .select('*')
     .order('created_at', { ascending: false });
-if (error) {
-  console.error('Erreur Supabase:', JSON.stringify(error));
-  return <p className="pt-40 text-center text-red-400">Erreur : {error.message}</p>;
+
+  if (error) {
+    return <p style={{paddingTop:'160px', textAlign:'center', color:'var(--rose)'}}>Erreur de chargement.</p>;
+  }
+
+console.log('Produits:', produits);
+console.log('Erreur:', error);
+  if (error) {
+  console.error('Erreur:', JSON.stringify(error));
+  return <div style={{paddingTop:'160px', textAlign:'center', color:'var(--rose)'}}>Erreur : {error.message}</div>;
 }
-
   return (
-    <main>
-      <section className="pt-32 pb-6 px-16 bg-white">
-        <h2 className="text-4xl text-pink-600 mb-2" style={{fontFamily:'Playfair Display, serif'}}>
-          Nos produits
-        </h2>
-        <p className="text-gray-500">Découvrez toute notre gamme de soins naturels</p>
-      </section>
+    <main style={{background:'var(--cream)', minHeight:'100vh'}}>
 
-      <section className="px-16 pb-6 flex gap-3 flex-wrap">
-        {categories.map((cat) => (
-          <span key={cat.id}
-            className="px-5 py-2 rounded-full border-2 border-pink-200 text-pink-600 text-sm font-medium cursor-pointer hover:bg-pink-600 hover:text-white hover:border-pink-600 transition-all duration-200">
-            {cat.label}
-          </span>
-        ))}
-      </section>
-
-      <section className="px-16 pb-20">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {produits.map((p) => (
-            <div key={p.id}
-              className="bg-pink-50 rounded-2xl p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
-              {p.est_nouveaute && (
-                <span className="bg-pink-600 text-white text-xs px-3 py-1 rounded-full font-semibold mb-3 inline-block">
-                  ✨ Nouveauté
-                </span>
-              )}
-              <div className="w-full h-48 bg-white rounded-xl flex items-center justify-center text-6xl mb-5 shadow-sm">
-                {p.emoji}
-              </div>
-              <h3 className="text-pink-600 text-lg font-semibold mb-1">{p.nom}</h3>
-              <p className="text-gray-400 text-sm mb-1">{p.poids}</p>
-              <p className="text-gray-700 font-bold text-lg mb-5">{p.prix}</p>
-              {p.en_stock ? (
-                <Link href={`/boutique/${p.id}`} className="btn-rose text-sm px-4 py-2 block text-center">
-                  Voir le produit
-                </Link>
-              ) : (
-                <span className="block text-center text-gray-400 text-sm py-2">Rupture de stock</span>
-              )}
-            </div>
-          ))}
+      {/* HERO */}
+      <section className="px-section" style={{paddingTop:'140px', paddingBottom:'60px', paddingLeft:'60px', paddingRight:'60px', borderBottom:'1px solid var(--gray-light)'}}>
+        <div style={{fontSize:'11px', letterSpacing:'4px', textTransform:'uppercase', color:'var(--rose)', fontWeight:500, marginBottom:'16px', display:'flex', alignItems:'center', gap:'12px'}}>
+          <span style={{width:'32px', height:'1px', background:'var(--rose)', display:'inline-block'}}></span>
+          Nos créations
         </div>
+        <h1 className="heading-xl" style={{fontFamily:'Cormorant Garamond, serif', fontSize:'56px', fontWeight:300, color:'var(--dark)', marginBottom:'16px', letterSpacing:'-1px'}}>
+          La boutique
+        </h1>
+        <p style={{fontSize:'15px', color:'var(--gray)', lineHeight:1.8, maxWidth:'480px'}}>
+          Chaque produit est formulé avec soin, à partir d'ingrédients naturels sélectionnés pour sublimer votre peau.
+        </p>
       </section>
+
+      <BoutiqueClient produits={produits} />
+
     </main>
   );
 }

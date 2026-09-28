@@ -1,28 +1,201 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
-
 @import "tailwindcss";
 
-.btn-rose {
-  background-color: #d63384;
+
+* { font-family: var(--font-dm-sans), sans-serif; }
+h1, h2, h3 { font-family: var(--font-cormorant), serif; }
+
+:root {
+  --cream: #FAF7F2;
+  --dark: #1C1C1E;
+  --rose: #C8748A;
+  --rose-light: #F0D6DC;
+  --rose-pale: #FDF4F6;
+  --gold: #C9A96E;
+  --gray: #6B6B6B;
+  --gray-light: #E8E4DF;
+}
+
+* { font-family: 'DM Sans', sans-serif; }
+body { background: var(--cream); color: var(--dark); }
+h1, h2, h3 { font-family: 'Cormorant Garamond', serif; }
+
+.btn-primary {
+  background: var(--dark);
   color: white;
-  padding: 12px 24px;
-  border-radius: 9999px;
-  font-weight: 600;
+  padding: 16px 36px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 500;
+  border-radius: 2px;
+  border: 1px solid var(--dark);
   display: inline-block;
-  transition: background-color 0.2s;
+  transition: all 0.3s;
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn-primary:hover { background: var(--rose); border-color: var(--rose); }
+
+.btn-secondary {
+  color: var(--dark);
+  padding: 16px 36px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 500;
+  border-radius: 2px;
+  border: 1px solid var(--dark);
+  display: inline-block;
+  transition: all 0.3s;
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn-secondary:hover { background: var(--dark); color: white; }
+
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--rose);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--rose); }
+
+/* ===== NAV LINKS — SOULIGNEMENT ANIMÉ ===== */
+.nav-link {
+  position: relative;
+  padding-bottom: 4px;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--rose);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.nav-link:hover::after,
+.nav-link.nav-link--active::after {
+  transform: scaleX(1);
+}
+.nav-link--promo::after {
+  background: #C44;
 }
 
-.btn-rose:hover { background-color: #b32c70; }
-
-.btn-blanc {
-  border: 2px solid #d63384;
-  color: #d63384;
-  background: white;
-  padding: 12px 24px;
-  border-radius: 9999px;
-  font-weight: 600;
-  display: inline-block;
-  transition: background-color 0.2s;
+/* ===== FOOTER — LIENS & CTA ===== */
+.footer-link {
+  position: relative;
+  width: fit-content;
+  transition: color 0.25s ease, padding-left 0.25s ease;
+}
+.footer-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 1px;
+  background: var(--rose);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.footer-link:hover {
+  color: white !important;
+  padding-left: 4px;
+}
+.footer-link:hover::after {
+  transform: scaleX(1);
 }
 
-.btn-blanc:hover { background-color: #fff0f5; }
+.footer-social {
+  transition: border-color 0.25s ease, transform 0.25s ease, background 0.25s ease;
+}
+.footer-social:hover {
+  border-color: var(--rose) !important;
+  background: rgba(200,116,138,0.12);
+  transform: translateY(-3px);
+}
+
+.footer-cta {
+  transition: padding-left 0.25s ease, color 0.25s ease;
+}
+.footer-cta:hover {
+  padding-left: 6px;
+}
+
+/* ===== RESPONSIVE ===== */
+html, body { overflow-x: hidden; max-width: 100vw; }
+
+/* Gouttière horizontale des sections : les valeurs par défaut (souvent 60px)
+   viennent des styles inline ; ces règles ne touchent que left/right. */
+@media (max-width: 900px) {
+  .px-section { padding-left: 32px !important; padding-right: 32px !important; }
+}
+@media (max-width: 600px) {
+  .px-section { padding-left: 20px !important; padding-right: 20px !important; }
+}
+
+/* Grilles qui doivent s'empiler sur petit écran */
+@media (max-width: 900px) {
+  .grid-collapse-4 { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media (max-width: 700px) {
+  .grid-collapse-2,
+  .grid-collapse-3,
+  .grid-collapse-4 { grid-template-columns: 1fr !important; }
+  .hero-media { min-height: 60vh !important; }
+  .fiche-image { min-height: 320px !important; }
+  .fiche-image .fiche-letter { font-size: 100px !important; }
+  .cart-summary { position: static !important; }
+  .cart-item-row { grid-template-columns: 64px 1fr !important; }
+  .cart-item-row > *:last-child { grid-column: 1 / -1 !important; display: flex !important; justify-content: space-between !important; align-items: center !important; }
+}
+
+.creneaux-grid { }
+@media (max-width: 900px) {
+  .creneaux-grid { grid-template-columns: repeat(3, 1fr) !important; }
+}
+@media (max-width: 600px) {
+  .creneaux-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .etapes-bar { gap: 8px !important; }
+  .etapes-bar .etape-label { display: none !important; }
+}
+
+@media (max-width: 700px) {
+  .contact-col-form { padding-right: 0 !important; border-right: none !important; padding-bottom: 40px !important; border-bottom: 1px solid var(--gray-light); }
+  .contact-col-infos { padding-left: 0 !important; padding-top: 40px !important; }
+  .auth-visual { display: none !important; }
+  .admin-sidebar { min-height: auto !important; }
+}
+
+@media (max-width: 420px) {
+  .profil-dropdown { width: calc(100vw - 40px) !important; right: -12px !important; }
+}
+
+/* Titres qui doivent rétrécir */
+@media (max-width: 900px) {
+  .heading-hero { font-size: 44px !important; }
+  .heading-xl { font-size: 34px !important; }
+}
+@media (max-width: 600px) {
+  .heading-hero { font-size: 34px !important; }
+  .heading-xl { font-size: 28px !important; }
+}
+
+/* Navigation */
+.nav-mobile-toggle { display: none; }
+@media (max-width: 860px) {
+  .nav-desktop { display: none !important; }
+  .nav-mobile-toggle { display: flex !important; }
+  .header-panier-label { display: none !important; }
+  .header-panier-btn { padding: 8px 12px !important; }
+  .header-gap { gap: 8px !important; }
+}
