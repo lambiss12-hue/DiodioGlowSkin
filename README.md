@@ -45,16 +45,17 @@ Tables principales utilisées par l'application :
 | `soins` | Soins proposés au rendez-vous (`nom`, `duree`, `prix`, `description`, `bienfaits`, `contre_indications`, `emoji` — clé d'icône, voir `app/components/IconesSoins.js`, `actif`) |
 | `commandes` | Commandes passées depuis le tunnel de commande |
 | `rendezvous` | Rendez-vous pris depuis `/rendezvous` |
-| `admins` | Emails autorisés à accéder à `/admin`. RLS activée : chaque utilisateur connecté ne peut lire que sa propre ligne (`auth.email() = email`) |
+| `admins` | Comptes autorisés à accéder à `/admin`, identifiés par `user_id` (UUID stable, ne change jamais même si l'email du compte est modifié). RLS activée : chaque utilisateur connecté ne peut lire que sa propre ligne (`auth.uid() = user_id`) |
 
 Toutes les tables sont interrogées côté client avec la clé anonyme (`NEXT_PUBLIC_SUPABASE_ANON_KEY`) : pensez à activer Row Level Security et des policies adaptées sur toute nouvelle table.
 
 ### Devenir administrateur
 
-Il n'existe pas d'interface pour se déclarer admin (sécurité). Ajoutez votre email dans la table `admins` directement depuis le SQL Editor de Supabase :
+Il n'existe pas d'interface pour se déclarer admin (sécurité). Ajoutez votre compte dans la table `admins` directement depuis le SQL Editor de Supabase, en récupérant l'UUID depuis `auth.users` :
 
 ```sql
-insert into admins (email) values ('votre-email@exemple.com');
+insert into admins (email, user_id)
+select 'votre-email@exemple.com', id from auth.users where email = 'votre-email@exemple.com';
 ```
 
 ## Structure du projet

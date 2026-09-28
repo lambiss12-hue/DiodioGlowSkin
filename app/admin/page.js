@@ -18,8 +18,8 @@ export default function Admin() {
 
       const { data: admin } = await supabase
         .from('admins')
-        .select('email')
-        .eq('email', user.email)
+        .select('user_id')
+        .eq('user_id', user.id)
         .single();
 
       if (!admin) { router.push('/'); return; }
